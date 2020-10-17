@@ -1,6 +1,6 @@
 package com.agh.repository;
 
-import com.agh.model.Territories;
+import com.agh.model.Customers;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -8,15 +8,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class TerritoriesRepository extends AbstractRepository {
-    public List<Territories> getAll() {
+public class CustomersRepository extends AbstractRepository {
+
+    public List<Customers> getAll() {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
-        List<Territories> territories = session
-                .createQuery("SELECT t FROM Territories t", Territories.class)
+        List<Customers> customers = session
+                .createQuery("SELECT c FROM Customers c", Customers.class)
                 .list();
         transaction.commit();
         session.close();
-        return territories;
+        return customers;
     }
+
 }
