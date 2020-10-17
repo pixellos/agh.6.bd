@@ -22,3 +22,5 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Build and publish Docker Image to GitHub Packages Registry
+      uses: VaultVulp/gp-docker-action@1.1.7
