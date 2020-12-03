@@ -20,4 +20,16 @@ public class ProductsService {
     public List<Products> getAll() {
         return productsRepository.getAll();
     }
+
+    public List<Products> getAllByCategory(String categoryName) {
+        return productsRepository.getAllByCategory(categoryName);
+    }
+
+    public List<Products> getAllBySupplierId(Short supplierId) {
+        return productsRepository.getAllBySupplierId(supplierId);
+    }
+
+    public List<Products> getAllBySuppliersCountry(String countryName) {
+        return productsRepository.getAllBySuppliersCountry(countryName);
+    }
 }
