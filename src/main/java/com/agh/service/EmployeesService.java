@@ -20,4 +20,8 @@ public class EmployeesService {
     public List<Employees> getAll() {
         return employeesRepository.getAll();
     }
+
+    public Employees getById(Short employeeId) {
+        return employeesRepository.getById(employeeId);
+    }
 }

@@ -20,4 +20,16 @@ public class OrdersService {
     public List<Orders> getAll() {
         return ordersRepository.getAll();
     }
+
+    public List<Orders> getAllByCustomerId(String customerId) {
+        return ordersRepository.getAllByCustomerId(customerId);
+    }
+
+    public List<Orders> getAllByEmployeeId(Short employeeId) {
+        return ordersRepository.getAllByEmployeeId(employeeId);
+    }
+
+    public List<Orders> getAllByShipperId(Short shipperId) {
+        return ordersRepository.getAllByShipperId(shipperId);
+    }
 }

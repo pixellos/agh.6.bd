@@ -20,4 +20,53 @@ public class OrderDetailsRepository extends AbstractRepository {
         session.close();
         return orderDetails;
     }
+
+    public List<OrderDetails> getByOrderId(Short orderId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        List<OrderDetails> orderDetails = session
+                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.orders.orderId=:orderId", OrderDetails.class)
+                .setParameter("orderId", orderId)
+                .list();
+        transaction.commit();
+        session.close();
+        return orderDetails;
+    }
+
+    public List<OrderDetails> getByProductId(Short orderId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        List<OrderDetails> orderDetails = session
+                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.productId=:orderId", OrderDetails.class)
+                .setParameter("orderId", orderId)
+                .list();
+        transaction.commit();
+        session.close();
+        return orderDetails;
+    }
+
+    public List<OrderDetails> getByProductCategory(String categoryName) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        List<OrderDetails> orderDetails = session
+                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.categories.categoryName=:categoryName", OrderDetails.class)
+                .setParameter("categoryName", categoryName)
+                .list();
+        transaction.commit();
+        session.close();
+        return orderDetails;
+    }
+
+    public List<OrderDetails> getBySupplierId(Short supplierId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        List<OrderDetails> orderDetails = session
+                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.suppliers.supplierId=:supplierId", OrderDetails.class)
+                .setParameter("supplierId", supplierId)
+                .list();
+        transaction.commit();
+        session.close();
+        return orderDetails;
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,5 +24,20 @@ public class OrdersController {
     @GetMapping("orders")
     public ResponseEntity<List<Orders>> getAll() {
         return new ResponseEntity<>(ordersService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("orders/customer/{customerId}")
+    public ResponseEntity<List<Orders>> getAllByCustomerId(@PathVariable String customerId) {
+        return new ResponseEntity<>(ordersService.getAllByCustomerId(customerId), HttpStatus.OK);
+    }
+
+    @GetMapping("orders/employee/{employeeId}")
+    public ResponseEntity<List<Orders>> getAllByEmployeeId(@PathVariable Short employeeId) {
+        return new ResponseEntity<>(ordersService.getAllByEmployeeId(employeeId), HttpStatus.OK);
+    }
+
+    @GetMapping("orders/shipper/{shipperId}")
+    public ResponseEntity<List<Orders>> getAllByShipperId(@PathVariable Short shipperId) {
+        return new ResponseEntity<>(ordersService.getAllByShipperId(shipperId), HttpStatus.OK);
     }
 }

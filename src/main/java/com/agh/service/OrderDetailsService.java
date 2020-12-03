@@ -20,4 +20,20 @@ public class OrderDetailsService {
     public List<OrderDetails> getAll() {
         return orderDetailsRepository.getAll();
     }
+
+    public List<OrderDetails> getByOrderId(Short orderId) {
+        return orderDetailsRepository.getByOrderId(orderId);
+    }
+
+    public List<OrderDetails> getByProductId(Short productId) {
+        return orderDetailsRepository.getByProductId(productId);
+    }
+
+    public List<OrderDetails> getByProductCategory(String categoryName) {
+        return orderDetailsRepository.getByProductCategory(categoryName);
+    }
+
+    public List<OrderDetails> getBySupplierId(Short supplierId) {
+        return orderDetailsRepository.getBySupplierId(supplierId);
+    }
 }
