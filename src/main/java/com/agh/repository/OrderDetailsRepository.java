@@ -25,7 +25,9 @@ public class OrderDetailsRepository extends AbstractRepository {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         List<OrderDetails> orderDetails = session
-                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.orders.orderId=:orderId", OrderDetails.class)
+                .createQuery("SELECT o FROM OrderDetails o " +
+                        "INNER JOIN o.orderDetailsId.orders ord " +
+                        "where ord.orderId=:orderId", OrderDetails.class)
                 .setParameter("orderId", orderId)
                 .list();
         transaction.commit();
@@ -33,12 +35,14 @@ public class OrderDetailsRepository extends AbstractRepository {
         return orderDetails;
     }
 
-    public List<OrderDetails> getByProductId(Short orderId) {
+    public List<OrderDetails> getByProductId(Short productId) {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         List<OrderDetails> orderDetails = session
-                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.productId=:orderId", OrderDetails.class)
-                .setParameter("orderId", orderId)
+                .createQuery("SELECT o FROM OrderDetails o " +
+                        "INNER JOIN o.orderDetailsId.products prd " +
+                        " where prd.productId=:productId", OrderDetails.class)
+                .setParameter("productId", productId)
                 .list();
         transaction.commit();
         session.close();
@@ -49,7 +53,10 @@ public class OrderDetailsRepository extends AbstractRepository {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         List<OrderDetails> orderDetails = session
-                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.categories.categoryName=:categoryName", OrderDetails.class)
+                .createQuery("SELECT o FROM OrderDetails o " +
+                        "INNER JOIN o.orderDetailsId.products prd " +
+                        "INNER JOIN prd.categories cat" +
+                        " where cat.categoryName =:categoryName", OrderDetails.class)
                 .setParameter("categoryName", categoryName)
                 .list();
         transaction.commit();
@@ -61,7 +68,11 @@ public class OrderDetailsRepository extends AbstractRepository {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         List<OrderDetails> orderDetails = session
-                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.suppliers.supplierId=:supplierId", OrderDetails.class)
+//                .createQuery("SELECT o FROM OrderDetails o where o.orderDetailsId.products.suppliers.supplierId=:supplierId", OrderDetails.class)
+                .createQuery("SELECT o FROM OrderDetails o" +
+                        " INNER JOIN o.orderDetailsId.products prd " +
+                        " INNER JOIN prd.suppliers sup " +
+                        " where sup.supplierId=:supplierId", OrderDetails.class)
                 .setParameter("supplierId", supplierId)
                 .list();
         transaction.commit();
