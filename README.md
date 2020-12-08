@@ -1,5 +1,18 @@
 #  AGH 6 - Bazy Danych
 
+- [AGH 6 - Bazy Danych](#agh-6---bazy-danych)
+  - [Uczestnicy](#uczestnicy)
+  - [Technologie](#technologie)
+  - [Metodyka](#metodyka)
+  - [Uruchamianie](#uruchamianie)
+    - [Wymagania](#wymagania)
+  - [Developowanie](#developowanie)
+
+## Dokumentacja
+
+- [Strona główna](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/index.pdf)
+- [Docker / Docker-Compose / CI/CD](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/docker.pdf)
+
 ## Uczestnicy
 
 Kamil Glinski
@@ -26,3 +39,17 @@ Wstrzykiwanie zaleznosci oraz konfiguracja warstwy backendowej zostalo zaimpleme
 
 Jako jezyk programowania zastosowalismy Java w wersji 8.
 
+## Uruchamianie
+### Wymagania
+- Docker for windows
+- WSL2
+
+Wykonujemy `initialize.ps1` i działa ;)
+
+
+
+## Developowanie
+Odpal Powershell i wywołaj
+```
+Set-HostsEntry -IPAddress 0.0.0.0 -HostName 'northwind' -Description "Alias na baze danych"
+```
