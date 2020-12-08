@@ -2,33 +2,33 @@
 
 Wydział Informatyki, Elektroniki i Telekomunikacji
 
-![](2020-12-05-11-18-47.png)
+![](./2020-12-05-11-18-47.png)
 
-##
 # Bazy danych – Northwind
 
 # System do składania zamówień
 
-Autorzy: Kamil Gliński, Mateusz Popielarz, Michal Flak
-
-#
+Autorzy
+- Kamil Gliński
+- Mateusz Popielarz
+- Michal Flak
 
 # Spis treści
-
-[System do składania zamówień 1](#_Toc58051994)
-
-[Wstęp 3](#_Toc58051995)
-
-[Przebieg prac: 3](#_Toc58051996)
-
-[Adres do repozytorium: 3](#_Toc58051997)
-
-[Użyte technologie: 3](#_Toc58051998)
-
-[Uruchomienie: 4](#_Toc58051999)
-
-[Odnośniki w aplikacji 5](#_Toc58052000)
-
+- [Bazy danych – Northwind](#bazy-danych--northwind)
+- [System do składania zamówień](#system-do-składania-zamówień)
+- [Spis treści](#spis-treści)
+- [Wstęp](#wstęp)
+  - [Przebieg prac:](#przebieg-prac)
+  - [Adres do repozytorium:](#adres-do-repozytorium)
+    - [Użyte technologie:](#użyte-technologie)
+  - [Uruchomienie dla developera:](#uruchomienie-dla-developera)
+  - [Uruchomienie:](#uruchomienie)
+  - [Odnośniki w aplikacji](#odnośniki-w-aplikacji)
+- [Dokumentacja funkcjonalna](#dokumentacja-funkcjonalna)
+  - [Interfejs użytkownika](#interfejs-użytkownika)
+    - [Konfiguracja](#konfiguracja)
+    - [Dodać paczki](#dodać-paczki)
+      - [Skonfigurować middleware](#skonfigurować-middleware)
 # Wstęp
 
 ## Przebieg prac:
@@ -48,13 +48,32 @@ https://github.com/pixellos/agh.6.bd
 - Swagger
 - SwaggerUI
 
+## Uruchomienie dla developera:
+
+W celu uruchomienia aplikacji należy:
+- Sklonowac repozytorium,
+- Zainstalowac na lokalnym komputerze baze danych postgreSql
+- Wykonac na bazie danych skrypty które znajduja się w repozytorium w lokalizacji /resources/db-schema
+- uruchomic aplikacje backendowa przez klase NorthwindApplication.java
+
 ## Uruchomienie:
 
-W celu uruchomienia aplikacji należy sklonowac repozytorium, zainstalowac na lokalnym komputerze baze danych postgreSql, oraz wykonac na bazie danych skrypty które znajduja się w repozytorium w lokalizacji /resources/db-schema, następnie należy uruchomic aplikacje backendowa przez klase NorthwindApplication.java
+W celu uruchomienia aplikacji należy zainstalować:
+- Docker for windows
+- WSL2
+
+Wykonujemy `initialize.ps1` i aplikacja działa na
+
+[http://localhost:5000]()
+
+jest też hostowana
+
+[https://northwind-java-pixellos.cloud.okteto.net/swagger-ui/]()
+
 
 ## Odnośniki w aplikacji
 
-- pobranie produktow po kategorii
+- pobranie produktow po kategorii 
 
 [http://localhost:8080/products/category/Beverages](http://localhost:8080/products/category/Beverages)
 
@@ -104,13 +123,14 @@ W celu uruchomienia aplikacji należy sklonowac repozytorium, zainstalowac na lo
 
 [http://localhost:8080/orders/shipper/1](http://localhost:8080/orders/shipper/1)
 
+
 # Dokumentacja funkcjonalna
 
 ## Interfejs użytkownika
 
 Podstawowym interfejsem użytkownika jest Swagger UI, który pozwala na łatwy dostęp do endpointów aplikacji z poziomu przeglądarki
 
-![](RackMultipart20201205-4-fvj511_html_f5df10599fb69a59.png)
+![](./2020-12-05-15-21-46.png)
 
 Rysunek X. Swagger UI W aplikacji
 
@@ -122,50 +142,51 @@ Aby go skonfigurować trzeba:
 
 ### Dodać paczki
 
-![](RackMultipart20201205-4-fvj511_html_8674e672c04c51fc.png)
+![](./2020-12-05-15-21-55.png)
 
 Rysunek X. Zrzut ekranu z paczkami
 
 #### Skonfigurować middleware
-
+```java
 package com.agh;
 
- import org.springframework.boot.SpringApplication;
- import org.springframework.boot.autoconfigure.SpringBootApplication;
- import org.springframework.context.annotation.Bean;
- import org.springframework.context.annotation.Configuration;
- import org.springframework.context.annotation.Import;
- import org.springframework.web.servlet.view.InternalResourceViewResolver;
- import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
- import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
- @EnableSwagger2
- @Configuration
- @Import(SpringDataRestConfiguration.class)
+@EnableSwagger2
+@Configuration
+@Import(SpringDataRestConfiguration.class)
 public class NorthwindApplication {
 
-@Bean
-public InternalResourceViewResolver defaultViewResolver() {
-return new InternalResourceViewResolver();
-}
+  @Bean
+  public InternalResourceViewResolver defaultViewResolver() {
+    return new InternalResourceViewResolver();
+  }
 
-public static void main(String[] args) {
- SpringApplication._run_(NorthwindApplication.class, args);
-}
+  public static void main(String[] args) {
+    SpringApplication._run_(NorthwindApplication.class, args);
+  }
  }
+```
 
 Rysunek X. Konfiguracja middleware
 
 Trzeba zwrócić uwagę na linię
 
+```
 @Bean
 public InternalResourceViewResolver defaultViewResolver() {
-return new InternalResourceViewResolver();
+  return new InternalResourceViewResolver();
 }
-
+```
 Rysunek 4. Konfiguracja ViewResolvera
 
 W obecnej wersji w swaggerUI występuje błąd, przez który ViewResolver działa niepoprawnie z najnowszym springiem. Rozwiązaniem jest ustawienie defaultViewResolvera na właściwy typ.
 
-9
