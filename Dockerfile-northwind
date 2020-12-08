@@ -1,0 +1,12 @@
+FROM postgres:latest
+COPY src/main/resources/db-schema/db-schema.sql /docker-entrypoint-initdb.d/2_db-schema.sql
+COPY src/main/resources/db-schema/data.sql /docker-entrypoint-initdb.d/3_data.sql
+
+ENV POSTGRES_HOST_AUTH_METHOD=trust
+ENV POSTGRES_PASSWORD=postgres 
+ENV POSTGRES_DB=northwind
+ENV POSTGRES_USER=postgres
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+EXPOSE 5432
+CMD ["postgres"]

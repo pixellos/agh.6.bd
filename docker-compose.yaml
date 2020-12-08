@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+  northwind:
+    build: 
+      context: .
+      dockerfile: Dockerfile-northwind
+    ports:
+      - 5432:5432
+    networks:
+      - postgres
+    volumes:
+      - database-data2:/var/lib/postgresql/data/ # persist data even if container shuts down
+
+  northwind-java:
+    depends_on:
+       - northwind
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - postgres
+
+volumes:
+  database-data2: 
+
+networks:
+  postgres:
+    driver: bridge
