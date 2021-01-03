@@ -1,13 +1,12 @@
 package com.agh.controller;
 
 import com.agh.model.Orders;
+import com.agh.request.CreateOrderRequest;
 import com.agh.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,5 +38,11 @@ public class OrdersController {
     @GetMapping("orders/shipper/{shipperId}")
     public ResponseEntity<List<Orders>> getAllByShipperId(@PathVariable Short shipperId) {
         return new ResponseEntity<>(ordersService.getAllByShipperId(shipperId), HttpStatus.OK);
+    }
+
+    @PostMapping("orders")
+    public ResponseEntity<Void> create(@RequestBody CreateOrderRequest request) {
+        ordersService.create(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

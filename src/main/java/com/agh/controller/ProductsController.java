@@ -1,13 +1,12 @@
 package com.agh.controller;
 
 import com.agh.model.Products;
+import com.agh.request.CreateProductRequest;
 import com.agh.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +38,12 @@ public class ProductsController {
     @GetMapping("products/supplier/country/{countryName}")
     public ResponseEntity<List<Products>> getAllBySuppliersCountry(@PathVariable String countryName) {
         return new ResponseEntity<>(productsService.getAllBySuppliersCountry(countryName), HttpStatus.OK);
+    }
+
+    @PostMapping("products")
+    public ResponseEntity<Void> create(@RequestBody CreateProductRequest request) {
+        productsService.create(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

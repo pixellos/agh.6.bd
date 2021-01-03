@@ -1,13 +1,12 @@
 package com.agh.controller;
 
 import com.agh.model.OrderDetails;
+import com.agh.request.CreateOrderDetailsRequest;
 import com.agh.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,4 +44,11 @@ public class OrderDetailsController {
     public ResponseEntity<List<OrderDetails>> getBySupplierId(@PathVariable Short supplierId) {
         return new ResponseEntity<>(orderDetailsService.getBySupplierId(supplierId), HttpStatus.OK);
     }
+
+    @PostMapping("orderDetails")
+    public ResponseEntity<Void> create(@RequestBody CreateOrderDetailsRequest request) {
+        orderDetailsService.create(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
