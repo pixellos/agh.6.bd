@@ -22,6 +22,6 @@ public class EmployeesService {
     }
 
     public Employees getById(Short employeeId) {
-        return employeesRepository.getById(employeeId);
+        return employeesRepository.getById(employeeId).orElseThrow(IllegalArgumentException::new);
     }
 }

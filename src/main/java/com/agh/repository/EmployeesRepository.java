@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class EmployeesRepository extends AbstractRepository {
@@ -19,12 +20,12 @@ public class EmployeesRepository extends AbstractRepository {
         return employees;
     }
 
-    public Employees getById(Short employeeId) {
+    public Optional<Employees> getById(Short employeeId) {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
-        Employees employees = session.createQuery("SELECT e FROM Employees e where e.employeeId=:employeeId", Employees.class)
+        Optional<Employees> employees = session.createQuery("SELECT e FROM Employees e WHERE e.employeeId=:employeeId", Employees.class)
                 .setParameter("employeeId", employeeId)
-                .uniqueResult();
+                .uniqueResultOptional();
         transaction.commit();
         session.close();
         return employees;
