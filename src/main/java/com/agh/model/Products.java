@@ -2,13 +2,15 @@ package com.agh.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 @Table(name = "products")
 public class Products {
+
     @Id
     @Column(name = "product_id")
+    @SequenceGenerator(name = "productSEQ", sequenceName = "product_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productSEQ")
     private short productId;
     @Column(name = "product_name")
     private String productName;
