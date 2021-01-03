@@ -111,7 +111,7 @@ CREATE TABLE employees (
     notes text,
     reports_to smallint,
     photo_path character varying(255),
-	FOREIGN KEY (reports_to) REFERENCES employees
+    FOREIGN KEY (reports_to) REFERENCES employees
 );
 
 
@@ -150,8 +150,8 @@ CREATE TABLE products (
     units_on_order smallint,
     reorder_level smallint,
     discontinued integer NOT NULL,
-	FOREIGN KEY (category_id) REFERENCES categories,
-	FOREIGN KEY (supplier_id) REFERENCES suppliers
+    FOREIGN KEY (category_id) REFERENCES categories,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers
 );
 
 
@@ -209,7 +209,7 @@ CREATE TABLE territories (
     territory_id character varying(20) NOT NULL PRIMARY KEY,
     territory_description bpchar NOT NULL,
     region_id smallint NOT NULL,
-	FOREIGN KEY (region_id) REFERENCES region
+    FOREIGN KEY (region_id) REFERENCES region
 );
 
 
@@ -252,3 +252,13 @@ CREATE TABLE us_states (
     state_abbr character varying(2),
     state_region character varying(50)
 );
+
+CREATE SEQUENCE order_id_seq
+    MINVALUE 1
+    START WITH 11078
+    INCREMENT BY 1;
+
+CREATE SEQUENCE product_id_seq
+    MINVALUE 1
+    START WITH 78
+    INCREMENT BY 1;

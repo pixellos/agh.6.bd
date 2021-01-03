@@ -1,0 +1,40 @@
+POST: http://localhost:8080/orders
+{
+	"shipperId": 1,
+    "employeeId": 2,
+    "customerId": "ALFKI",
+
+    "requiredDate": "25-01-2021",
+    "shippedDate": "23-01-2021",
+    "freight": 9.90,
+    "shipName": "Fast-Ship",
+    "shipAddress": "ul.Wisniowa 25/5",
+    "shipCity": "Katowice",
+    "shipRegion": "Silesia",
+    "shipPostalCode": "40-241",
+    "shipCountry": "Poland"
+}
+
+POST: http://localhost:8080/products
+{
+    "supplierId": 9,
+    "categoryId": 8,
+
+    "productName": "Hake" ,
+    "quantityPerUnit": "10 boxes",
+    "unitPrice": 90,
+    "unitsInStock": 110,
+    "unitsOnOrder": 25,
+    "reorderLevel": 4,
+    "discontinued": 0
+}
+
+POST: http://localhost:8080/orderDetails
+{
+	"orderId": 11077,
+    "productId": 77,
+
+    "unitPrice": 19.90,
+    "quantity": 10,
+    "discount": 0
+}
