@@ -20,4 +20,8 @@ public class CategoriesService {
     public List<Categories> getAll() {
         return categoriesRepository.getAll();
     }
+
+    public Categories getById(Short categoryId) {
+        return categoriesRepository.getById(categoryId).orElseThrow(IllegalArgumentException::new);
+    }
 }

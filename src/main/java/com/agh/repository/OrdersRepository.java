@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrdersRepository extends AbstractRepository {
@@ -19,6 +20,18 @@ public class OrdersRepository extends AbstractRepository {
         transaction.commit();
         session.close();
         return orders;
+    }
+
+    public Optional<Orders> getById(Short orderId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        Optional<Orders> order = session
+                .createQuery("SELECT o FROM Orders o WHERE o.orderId=:orderId", Orders.class)
+                .setParameter("orderId", orderId)
+                .uniqueResultOptional();
+        transaction.commit();
+        session.close();
+        return order;
     }
 
     public List<Orders> getAllByCustomerId(String customerId) {
@@ -61,6 +74,14 @@ public class OrdersRepository extends AbstractRepository {
         transaction.commit();
         session.close();
         return orders;
+    }
+
+    public void persist(Orders order) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        session.persist(order);
+        transaction.commit();
+        session.close();
     }
 
 }

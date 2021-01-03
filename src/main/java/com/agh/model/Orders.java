@@ -3,14 +3,16 @@ package com.agh.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 public class Orders {
+
     @Id
     @Column(name = "order_id")
+    @SequenceGenerator(name = "orderSEQ", sequenceName = "order_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSEQ")
     private short orderId;
     @Column(name = "order_date")
     private LocalDate orderDate;
@@ -170,5 +172,10 @@ public class Orders {
 
     public void setOrderDetails(Set<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        orderDate = LocalDate.now();
     }
 }

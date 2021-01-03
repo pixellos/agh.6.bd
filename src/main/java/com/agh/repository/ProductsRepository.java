@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductsRepository extends AbstractRepository {
@@ -17,6 +18,18 @@ public class ProductsRepository extends AbstractRepository {
         transaction.commit();
         session.close();
         return products;
+    }
+
+    public Optional<Products> getById(Short productId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        Optional<Products> product = session
+                .createQuery("SELECT p FROM Products p WHERE p.productId=:productId", Products.class)
+                .setParameter("productId", productId)
+                .uniqueResultOptional();
+        transaction.commit();
+        session.close();
+        return product;
     }
 
     public List<Products> getAllByCategory(String categoryName) {
@@ -67,5 +80,11 @@ public class ProductsRepository extends AbstractRepository {
         return products;
     }
 
-
+    public void persist(Products product) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        session.persist(product);
+        transaction.commit();
+        session.close();
+    }
 }

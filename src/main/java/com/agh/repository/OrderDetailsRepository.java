@@ -80,4 +80,12 @@ public class OrderDetailsRepository extends AbstractRepository {
         return orderDetails;
     }
 
+    public void persist(OrderDetails orderDetails) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        session.persist(orderDetails);
+        transaction.commit();
+        session.close();
+    }
+
 }

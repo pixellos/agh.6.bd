@@ -20,4 +20,8 @@ public class SuppliersService {
     public List<Suppliers> getAll() {
         return suppliersRepository.getAll();
     }
+
+    public Suppliers getById(Short supplierId) {
+        return suppliersRepository.getById(supplierId).orElseThrow(IllegalArgumentException::new);
+    }
 }

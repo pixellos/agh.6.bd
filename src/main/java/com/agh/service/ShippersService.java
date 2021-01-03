@@ -18,6 +18,10 @@ public class ShippersService {
     }
 
     public List<Shippers> getAll() {
-         return shippersRepository.getAll();
+        return shippersRepository.getAll();
+    }
+
+    public Shippers getById(Short shipperId) {
+        return shippersRepository.getById(shipperId).orElseThrow(IllegalArgumentException::new);
     }
 }

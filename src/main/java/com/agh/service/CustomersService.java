@@ -20,4 +20,8 @@ public class CustomersService {
     public List<Customers> getAll() {
         return customersRepository.getAll();
     }
+
+    public Customers getById(String customerId) {
+        return customersRepository.getById(customerId).orElseThrow(IllegalArgumentException::new);
+    }
 }

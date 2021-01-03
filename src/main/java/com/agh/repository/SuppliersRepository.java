@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class SuppliersRepository extends AbstractRepository {
@@ -19,5 +20,17 @@ public class SuppliersRepository extends AbstractRepository {
         transaction.commit();
         session.close();
         return suppliers;
+    }
+
+    public Optional<Suppliers> getById(Short supplierId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        Optional<Suppliers> supplier = session
+                .createQuery("SELECT s FROM Suppliers s WHERE s.supplierId=:supplierId", Suppliers.class)
+                .setParameter("supplierId", supplierId)
+                .uniqueResultOptional();
+        transaction.commit();
+        session.close();
+        return supplier;
     }
 }
