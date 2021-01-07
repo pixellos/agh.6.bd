@@ -15,7 +15,10 @@ public class OrdersRepository extends AbstractRepository {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         List<Orders> orders = session
-                .createQuery("SELECT o FROM Orders o", Orders.class)
+                .createQuery("SELECT o FROM Orders o" +
+                        " LEFT JOIN FETCH o.customers c" +
+                        " LEFT JOIN FETCH o.employees e" +
+                        " LEFT JOIN FETCH o.shippers s ", Orders.class)
                 .list();
         transaction.commit();
         session.close();
@@ -39,8 +42,10 @@ public class OrdersRepository extends AbstractRepository {
         Transaction transaction = session.beginTransaction();
         List<Orders> orders = session
                 .createQuery("SELECT o FROM Orders o" +
-                        " INNER JOIN o.customers c " +
-                        " where c.customerId=:customerId", Orders.class)
+                        " LEFT JOIN FETCH o.customers c" +
+                        " LEFT JOIN FETCH o.employees e" +
+                        " LEFT JOIN FETCH o.shippers s " +
+                        " WHERE c.customerId=:customerId", Orders.class)
                 .setParameter("customerId", customerId)
                 .list();
         transaction.commit();
@@ -53,8 +58,10 @@ public class OrdersRepository extends AbstractRepository {
         Transaction transaction = session.beginTransaction();
         List<Orders> orders = session
                 .createQuery("SELECT o FROM Orders o" +
-                        " INNER JOIN o.employees e " +
-                        " where e.employeeId=:employeeId", Orders.class)
+                        " LEFT JOIN FETCH o.customers c" +
+                        " LEFT JOIN FETCH o.employees e" +
+                        " LEFT JOIN FETCH o.shippers s " +
+                        " WHERE e.employeeId=:employeeId", Orders.class)
                 .setParameter("employeeId", employeeId)
                 .list();
         transaction.commit();
@@ -67,8 +74,10 @@ public class OrdersRepository extends AbstractRepository {
         Transaction transaction = session.beginTransaction();
         List<Orders> orders = session
                 .createQuery("SELECT o FROM Orders o" +
-                        " INNER JOIN o.shippers s " +
-                        " where s.shipperId=:shipperId", Orders.class)
+                        " LEFT JOIN FETCH o.customers c" +
+                        " LEFT JOIN FETCH o.employees e" +
+                        " LEFT JOIN FETCH o.shippers s " +
+                        " WHERE s.shipperId=:shipperId", Orders.class)
                 .setParameter("shipperId", shipperId)
                 .list();
         transaction.commit();
