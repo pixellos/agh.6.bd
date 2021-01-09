@@ -16,7 +16,7 @@ jobs:
           input_dir: docs
           output_dir: pdfs
           # for example <img src="./images/file-name.png">          
-          images_dir: docs/images
+          images_dir: docs
           # Default is true, can set to false to only get PDF files
           build_html: false
       
