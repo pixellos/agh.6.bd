@@ -16,8 +16,8 @@ public class ProductsRepository extends AbstractRepository {
         Transaction transaction = session.beginTransaction();
         List<Products> products = session
                 .createQuery("SELECT p FROM Products p" +
-                        " LEFT JOIN FETCH p.suppliers s" +
-                        " LEFT JOIN FETCH p.categories c", Products.class)
+                        " INNER JOIN FETCH p.suppliers s" +
+                        " INNER JOIN FETCH p.categories c", Products.class)
                 .list();
         transaction.commit();
         session.close();
@@ -42,9 +42,9 @@ public class ProductsRepository extends AbstractRepository {
 
         List<Products> products = session.createQuery(
                 "SELECT p FROM Products p" +
-                        " LEFT JOIN FETCH p.suppliers s" +
+                        " INNER JOIN FETCH p.suppliers s" +
                         " INNER JOIN FETCH p.categories c" +
-                        " where c.categoryName=:categoryName", Products.class)
+                        " WHERE c.categoryName=:categoryName", Products.class)
                 .setParameter("categoryName", categoryName)
                 .list();
 
@@ -59,7 +59,7 @@ public class ProductsRepository extends AbstractRepository {
 
         List<Products> products = session.createQuery(
                 "SELECT p FROM Products p" +
-                        " LEFT JOIN FETCH p.suppliers s" +
+                        " INNER JOIN FETCH p.suppliers s" +
                         " INNER JOIN FETCH p.categories c" +
                         " WHERE s.supplierId=:supplierId", Products.class)
                 .setParameter("supplierId", supplierId)
@@ -76,7 +76,7 @@ public class ProductsRepository extends AbstractRepository {
 
         List<Products> products = session.createQuery(
                 "SELECT p FROM Products p" +
-                        " LEFT JOIN FETCH p.suppliers s " +
+                        " INNER JOIN FETCH p.suppliers s " +
                         " INNER JOIN FETCH p.categories c" +
                         " WHERE s.country=:suppliersCountry", Products.class)
                 .setParameter("suppliersCountry", suppliersCountry)
