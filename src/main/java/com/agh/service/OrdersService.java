@@ -19,14 +19,16 @@ public class OrdersService {
     private final ShippersService shippersService;
     private final EmployeesService employeesService;
     private final CustomersService customersService;
+    private final ValidationService validationService;
 
     @Autowired
     public OrdersService(OrdersRepository ordersRepository, ShippersService shippersService,
-                         EmployeesService employeesService, CustomersService customersService) {
+                         EmployeesService employeesService, CustomersService customersService, ValidationService validationService) {
         this.ordersRepository = ordersRepository;
         this.shippersService = shippersService;
         this.employeesService = employeesService;
         this.customersService = customersService;
+        this.validationService = validationService;
     }
 
     public List<Orders> getAll() {
@@ -68,6 +70,7 @@ public class OrdersService {
         order.setShipRegion(request.getShipRegion());
         order.setShipPostalCode(request.getShipPostalCode());
         order.setShipCountry(request.getShipCountry());
+        validationService.validate(order);
         ordersRepository.persist(order);
     }
 }

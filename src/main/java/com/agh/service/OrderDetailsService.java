@@ -17,12 +17,15 @@ public class OrderDetailsService {
     private final OrderDetailsRepository orderDetailsRepository;
     private final OrdersService ordersService;
     private final ProductsService productsService;
+    private final ValidationService validationService;
 
     @Autowired
-    public OrderDetailsService(OrderDetailsRepository orderDetailsRepository, OrdersService ordersService, ProductsService productsService) {
+    public OrderDetailsService(OrderDetailsRepository orderDetailsRepository, OrdersService ordersService, ProductsService productsService,
+                               ValidationService validationService) {
         this.orderDetailsRepository = orderDetailsRepository;
         this.ordersService = ordersService;
         this.productsService = productsService;
+        this.validationService = validationService;
     }
 
     public List<OrderDetails> getAll() {
@@ -58,6 +61,8 @@ public class OrderDetailsService {
         orderDetails.setUnitPrice(request.getUnitPrice());
         orderDetails.setQuantity(request.getQuantity());
         orderDetails.setDiscount(request.getDiscount());
+
+        validationService.validate(orderDetails);
         orderDetailsRepository.persist(orderDetails);
     }
 }

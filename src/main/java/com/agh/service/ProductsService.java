@@ -16,12 +16,15 @@ public class ProductsService {
     private final ProductsRepository productsRepository;
     private final SuppliersService suppliersService;
     private final CategoriesService categoriesService;
+    private final ValidationService validationService;
 
     @Autowired
-    public ProductsService(ProductsRepository productsRepository, SuppliersService suppliersService, CategoriesService categoriesService) {
+    public ProductsService(ProductsRepository productsRepository, SuppliersService suppliersService, CategoriesService categoriesService,
+                           ValidationService validationService) {
         this.productsRepository = productsRepository;
         this.suppliersService = suppliersService;
         this.categoriesService = categoriesService;
+        this.validationService = validationService;
     }
 
     public List<Products> getAll() {
@@ -59,6 +62,7 @@ public class ProductsService {
         product.setReorderLevel(request.getReorderLevel());
         product.setDiscontinued(request.getDiscontinued());
 
+        validationService.validate(product);
         productsRepository.persist(product);
     }
 }
