@@ -15,10 +15,9 @@ jobs:
         with:
           input_dir: docs
           output_dir: pdfs
-          # for example <img src="./images/file-name.png">          
-          images_dir: docs/images
-          # Default is true, can set to false to only get PDF files
-          build_html: false
+          images_path: .
+          images_dir: docs
+          build_html: true
       
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
