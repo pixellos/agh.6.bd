@@ -8,7 +8,7 @@
 
 Wydział Informatyki, Elektroniki i Telekomunikacji
 
-![](./2020-12-05-11-18-47.png)
+![](./images/2020-12-05-11-18-47.png)
 
 # Bazy danych – Northwind
 
@@ -152,7 +152,7 @@ jest też hostowana
 
 Podstawowym interfejsem użytkownika jest Swagger UI, który pozwala na łatwy dostęp do endpointów aplikacji z poziomu przeglądarki
 
-![](./2020-12-05-15-21-46.png)
+![](./images/2020-12-05-15-21-46.png)
 
 Rysunek X. Swagger UI W aplikacji
 
@@ -164,7 +164,7 @@ Aby go skonfigurować trzeba:
 
 ### Dodać paczki
 
-![](./2020-12-05-15-21-55.png)
+![](./images/2020-12-05-15-21-55.png)
 
 Rysunek X. Zrzut ekranu z paczkami
 

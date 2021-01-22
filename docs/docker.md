@@ -56,7 +56,7 @@ Switch `t` służy do nazwania obrazu
 
 Po kilku minutach budowanie powinno zakończyć się bez błędu 
 
-![](./2020-12-05-13-50-26.png)
+![](./images/2020-12-05-13-50-26.png)
 
 ### Uruchamianie 
 
@@ -66,11 +66,11 @@ Wtedy możemy uruchomić nasz obraz
 
 i w przeglądarce powinniśmy dać rady  połączyć się z aplikacją
 
-![](./2020-12-05-14-00-42.png)
+![](./images/2020-12-05-14-00-42.png)
 
 możemy go zatrzymać wywołując `docker stop java`
 
-![](./2020-12-05-14-04-17.png)
+![](./images/2020-12-05-14-04-17.png)
 
 Ale w dalszym ciągu nie mamy bazy
 
@@ -105,13 +105,13 @@ CMD ["postgres"]
 `docker build . -f Dockerfile-northwind -t pg-service:latest`
 
 
-![](./2020-12-05-14-25-32.png)
+![](./images/2020-12-05-14-25-32.png)
 
 ### Uruchamianie
 
 `docker run --publish 5432:5432 --detach --name pg pg-service:latest`
 
-![](./2020-12-05-14-35-23.png)
+![](./images/2020-12-05-14-35-23.png)
 
 
 ## Komunikacja pomiędzy kontenerami `docker-compose`
@@ -184,21 +184,21 @@ po wywołaniu
 Nasza baza i aplikacja powinny się uruchomić, i powinniśmy być w stanie otworzyć 
 [http://localhost:8080]()
 
-![](./2020-12-05-15-03-05.png)
+![](./images/2020-12-05-15-03-05.png)
 *swagger ui z danymi*
 
 ## Deploy używając Okteto-stacks
 
 Naszą konstelacje aplikacji możemy zdeployować za darmo używając Okteto
 
-![](./2020-12-05-15-07-00.png)
+![](./images/2020-12-05-15-07-00.png)
 [https://okteto.com/]()
 
 Robimy konto, polecam przez githuba
 
 Gdy potwierdzimy mail dodajemy nasze repo
 
-![](./2020-12-05-15-11-31.png)
+![](./images/2020-12-05-15-11-31.png)
 
 I teraz możemy przejść do konfiguracji
 
@@ -228,7 +228,7 @@ services:
 
 Klikamy `redeploy`
 
-![](./2020-12-05-15-16-42.png)
+![](./images/2020-12-05-15-16-42.png)
 
 I możemy używać naszej aplikacji 
 
