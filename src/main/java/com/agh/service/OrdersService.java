@@ -10,6 +10,7 @@ import com.agh.util.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -60,6 +61,7 @@ public class OrdersService {
         order.setShippers(shipper);
         order.setEmployees(employee);
         order.setCustomers(customer);
+        order.setOrderDate(LocalDate.now());
 
         order.setRequiredDate(DateConverter.toDate(request.getRequiredDate()));
         order.setShippedDate(DateConverter.toDate(request.getShippedDate()));
