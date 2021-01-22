@@ -16,10 +16,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: baileyjm02/markdown-to-pdf@v1.0.1
         with:
-          input_dir: docs
           output_dir: pdfs
-          images_path: ./images
+          input_dir: docs
           images_dir: docs/images
+          images_path: ./images
           build_html: true
       
       - uses: stefanzweifel/git-auto-commit-action@v4
