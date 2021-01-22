@@ -15,7 +15,7 @@ Wydział Informatyki, Elektroniki i Telekomunikacji
 ![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/northwind.PNG)
 
 # System do składania zamówień
- 
+
 Autorzy
 - Kamil Gliński
 - Mateusz Popielarz
@@ -77,10 +77,6 @@ https://github.com/pixellos/agh.6.bd
 - Spring boot
 - Swagger
 - SwaggerUI
-
-### Uzasadnienie:
-
-(tutaj parę słów żeby wyjaśnić czemu to wybraliście)
 
 ## Uruchomienie dla developera:
 
@@ -162,7 +158,7 @@ jest też hostowana
 
 ## Docker
 *Co chcemy osiągnąć w tej sekcji?*
- 
+
 Zbudować aplikację Java korzystającą z bazy danych
 
 ### Prerekwizyty
@@ -965,40 +961,14 @@ public class CreateProductRequest {
 GET http://localhost:8080/products
 ```
 
-Odpowiedź:
+Kod z ProductRepository:
 
 ```json
-[
-  {
-    "productId": 1,
-    "productName": "Chai",
-    "quantityPerUnit": "10 boxes x 30 bags",
-    "unitPrice": 18,
-    "unitsInStock": 39,
-    "unitsOnOrder": 0,
-    "reorderLevel": 10,
-    "discontinued": 1,
-    "suppliers": {
-      "supplierId": 8,
-      "companyName": "Specialty Biscuits, Ltd.",
-      "contactName": "Peter Wilson",
-      "contactTitle": "Sales Representative",
-      "address": "29 King's Way",
-      "city": "Manchester",
-      "region": null,
-      "postalCode": "M14 GSD",
-      "country": "UK",
-      "phone": "(161) 555-4448",
-      "fax": null,
-      "homepage": null
-    },
-    "categories": {
-      "categoryId": 1,
-      "categoryName": "Beverages",
-      "description": "Soft drinks, coffees, teas, beers, and ales",
-      "picture": ""
-    }
-  }...
+        List<Products> products = session
+                .createQuery("SELECT p FROM Products p" +
+                        " INNER JOIN FETCH p.suppliers s" +
+                        " INNER JOIN FETCH p.categories c", Products.class)
+                .list();
 ```
 
 Generowany SQL:
@@ -1048,40 +1018,16 @@ Hibernate:
 GET http://localhost:8080/products/category/Beverages
 ```
 
-Odpowiedź:
+Kod z ProductRepository:
 
 ```json
-[
-  {
-    "productId": 1,
-    "productName": "Chai",
-    "quantityPerUnit": "10 boxes x 30 bags",
-    "unitPrice": 18,
-    "unitsInStock": 39,
-    "unitsOnOrder": 0,
-    "reorderLevel": 10,
-    "discontinued": 1,
-    "suppliers": {
-      "supplierId": 8,
-      "companyName": "Specialty Biscuits, Ltd.",
-      "contactName": "Peter Wilson",
-      "contactTitle": "Sales Representative",
-      "address": "29 King's Way",
-      "city": "Manchester",
-      "region": null,
-      "postalCode": "M14 GSD",
-      "country": "UK",
-      "phone": "(161) 555-4448",
-      "fax": null,
-      "homepage": null
-    },
-    "categories": {
-      "categoryId": 1,
-      "categoryName": "Beverages",
-      "description": "Soft drinks, coffees, teas, beers, and ales",
-      "picture": ""
-    }
-  }...
+        List<Products> products = session.createQuery(
+                "SELECT p FROM Products p" +
+                        " INNER JOIN FETCH p.suppliers s" +
+                        " INNER JOIN FETCH p.categories c" +
+                        " WHERE c.categoryName=:categoryName", Products.class)
+                .setParameter("categoryName", categoryName)
+                .list();
 ```
 
 Generowany SQL:
@@ -1145,15 +1091,74 @@ POST http://localhost:8080/products/
 }
 ```
 
-Odpowiedź:
+Kod z ProductRepository:
 
 ```json
-200 OK
+        session.persist(product);
 ```
 
 Generowany SQL:
 
 ```sql
+Hibernate: 
+    select
+        suppliers0_.supplier_id as supplier1_20_,
+        suppliers0_.address as address2_20_,
+        suppliers0_.city as city3_20_,
+        suppliers0_.company_name as company_4_20_,
+        suppliers0_.contact_name as contact_5_20_,
+        suppliers0_.contact_title as contact_6_20_,
+        suppliers0_.country as country7_20_,
+        suppliers0_.fax as fax8_20_,
+        suppliers0_.homepage as homepage9_20_,
+        suppliers0_.phone as phone10_20_,
+        suppliers0_.postal_code as postal_11_20_,
+        suppliers0_.region as region12_20_ 
+    from
+        suppliers suppliers0_ 
+    where
+        suppliers0_.supplier_id=?
+Hibernate: 
+    select
+        categories0_.category_id as category1_0_,
+        categories0_.category_name as category2_0_,
+        categories0_.description as descript3_0_,
+        categories0_.picture as picture4_0_ 
+    from
+        categories categories0_ 
+    where
+        categories0_.category_id=?
+Hibernate: 
+    select
+        nextval ('product_id_seq')
+Hibernate: 
+    select
+        categories_.category_id,
+        categories_.category_name as category2_0_,
+        categories_.description as descript3_0_,
+        categories_.picture as picture4_0_ 
+    from
+        categories categories_ 
+    where
+        categories_.category_id=?
+Hibernate: 
+    select
+        suppliers_.supplier_id,
+        suppliers_.address as address2_20_,
+        suppliers_.city as city3_20_,
+        suppliers_.company_name as company_4_20_,
+        suppliers_.contact_name as contact_5_20_,
+        suppliers_.contact_title as contact_6_20_,
+        suppliers_.country as country7_20_,
+        suppliers_.fax as fax8_20_,
+        suppliers_.homepage as homepage9_20_,
+        suppliers_.phone as phone10_20_,
+        suppliers_.postal_code as postal_11_20_,
+        suppliers_.region as region12_20_ 
+    from
+        suppliers suppliers_ 
+    where
+        suppliers_.supplier_id=?
 Hibernate: 
     insert 
     into
@@ -1163,7 +1168,313 @@ Hibernate:
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ```
 
-### 
+## Przykładowe wywołania na Orderze:
+
+### 1. GetAll
+
+```
+GET http://localhost:8080/orders
+```
+
+Kod z OrderRepository:
+
+```json
+        List<Orders> orders = session
+                .createQuery("SELECT o FROM Orders o" +
+                        " INNER JOIN FETCH o.customers c" +
+                        " INNER JOIN FETCH o.employees e" +
+                        " INNER JOIN FETCH o.shippers s ", Orders.class)
+```
+
+Generowany SQL:
+
+```sql
+Hibernate: 
+    select
+        orders0_.order_id as order_id1_13_0_,
+        customers1_.customer_id as customer1_5_1_,
+        employees2_.employee_id as employee1_9_2_,
+        shippers3_.shipper_id as shipper_1_18_3_,
+        orders0_.customer_id as custome12_13_0_,
+        orders0_.employee_id as employe13_13_0_,
+        orders0_.freight as freight2_13_0_,
+        orders0_.order_date as order_da3_13_0_,
+        orders0_.required_date as required4_13_0_,
+        orders0_.ship_address as ship_add5_13_0_,
+        orders0_.ship_city as ship_cit6_13_0_,
+        orders0_.ship_country as ship_cou7_13_0_,
+        orders0_.ship_name as ship_nam8_13_0_,
+        orders0_.ship_postal_code as ship_pos9_13_0_,
+        orders0_.ship_region as ship_re10_13_0_,
+        orders0_.shipped_date as shipped11_13_0_,
+        orders0_.ship_via as ship_vi14_13_0_,
+        customers1_.address as address2_5_1_,
+        customers1_.city as city3_5_1_,
+        customers1_.company_name as company_4_5_1_,
+        customers1_.contact_name as contact_5_5_1_,
+        customers1_.contact_title as contact_6_5_1_,
+        customers1_.country as country7_5_1_,
+        customers1_.fax as fax8_5_1_,
+        customers1_.phone as phone9_5_1_,
+        customers1_.postal_code as postal_10_5_1_,
+        customers1_.region as region11_5_1_,
+        employees2_.address as address2_9_2_,
+        employees2_.birth_date as birth_da3_9_2_,
+        employees2_.city as city4_9_2_,
+        employees2_.country as country5_9_2_,
+        employees2_.extension as extensio6_9_2_,
+        employees2_.first_name as first_na7_9_2_,
+        employees2_.hire_date as hire_dat8_9_2_,
+        employees2_.home_phone as home_pho9_9_2_,
+        employees2_.last_name as last_na10_9_2_,
+        employees2_.notes as notes11_9_2_,
+        employees2_.photo as photo12_9_2_,
+        employees2_.photo_path as photo_p13_9_2_,
+        employees2_.postal_code as postal_14_9_2_,
+        employees2_.region as region15_9_2_,
+        employees2_.title as title16_9_2_,
+        employees2_.title_of_courtesy as title_o17_9_2_,
+        shippers3_.company_name as company_2_18_3_,
+        shippers3_.phone as phone3_18_3_ 
+    from
+        Orders orders0_ 
+    inner join
+        customers customers1_ 
+            on orders0_.customer_id=customers1_.customer_id 
+    inner join
+        employees employees2_ 
+            on orders0_.employee_id=employees2_.employee_id 
+    inner join
+        shippers shippers3_ 
+            on orders0_.ship_via=shippers3_.shipper_id
+```
+
+### 2. GetAllByShipperId
+
+```
+GET http://localhost:8080/orders/shipper/1
+```
+
+Kod z OrderRepository:
+
+```json
+        List<Orders> orders = session
+                .createQuery("SELECT o FROM Orders o" +
+                        " INNER JOIN FETCH o.customers c" +
+                        " INNER JOIN FETCH o.employees e" +
+                        " INNER JOIN FETCH o.shippers s " +
+                        " WHERE s.shipperId=:shipperId", Orders.class)
+                .setParameter("shipperId", shipperId)
+                .list();
+```
+
+Generowany SQL:
+
+```sql
+Hibernate: 
+    select
+        orders0_.order_id as order_id1_13_0_,
+        customers1_.customer_id as customer1_5_1_,
+        employees2_.employee_id as employee1_9_2_,
+        shippers3_.shipper_id as shipper_1_18_3_,
+        orders0_.customer_id as custome12_13_0_,
+        orders0_.employee_id as employe13_13_0_,
+        orders0_.freight as freight2_13_0_,
+        orders0_.order_date as order_da3_13_0_,
+        orders0_.required_date as required4_13_0_,
+        orders0_.ship_address as ship_add5_13_0_,
+        orders0_.ship_city as ship_cit6_13_0_,
+        orders0_.ship_country as ship_cou7_13_0_,
+        orders0_.ship_name as ship_nam8_13_0_,
+        orders0_.ship_postal_code as ship_pos9_13_0_,
+        orders0_.ship_region as ship_re10_13_0_,
+        orders0_.shipped_date as shipped11_13_0_,
+        orders0_.ship_via as ship_vi14_13_0_,
+        customers1_.address as address2_5_1_,
+        customers1_.city as city3_5_1_,
+        customers1_.company_name as company_4_5_1_,
+        customers1_.contact_name as contact_5_5_1_,
+        customers1_.contact_title as contact_6_5_1_,
+        customers1_.country as country7_5_1_,
+        customers1_.fax as fax8_5_1_,
+        customers1_.phone as phone9_5_1_,
+        customers1_.postal_code as postal_10_5_1_,
+        customers1_.region as region11_5_1_,
+        employees2_.address as address2_9_2_,
+        employees2_.birth_date as birth_da3_9_2_,
+        employees2_.city as city4_9_2_,
+        employees2_.country as country5_9_2_,
+        employees2_.extension as extensio6_9_2_,
+        employees2_.first_name as first_na7_9_2_,
+        employees2_.hire_date as hire_dat8_9_2_,
+        employees2_.home_phone as home_pho9_9_2_,
+        employees2_.last_name as last_na10_9_2_,
+        employees2_.notes as notes11_9_2_,
+        employees2_.photo as photo12_9_2_,
+        employees2_.photo_path as photo_p13_9_2_,
+        employees2_.postal_code as postal_14_9_2_,
+        employees2_.region as region15_9_2_,
+        employees2_.title as title16_9_2_,
+        employees2_.title_of_courtesy as title_o17_9_2_,
+        shippers3_.company_name as company_2_18_3_,
+        shippers3_.phone as phone3_18_3_ 
+    from
+        Orders orders0_ 
+    inner join
+        customers customers1_ 
+            on orders0_.customer_id=customers1_.customer_id 
+    inner join
+        employees employees2_ 
+            on orders0_.employee_id=employees2_.employee_id 
+    inner join
+        shippers shippers3_ 
+            on orders0_.ship_via=shippers3_.shipper_id 
+    where
+        shippers3_.shipper_id=?
+```
+
+### 3. Create
+
+```
+POST http://localhost:8080/orders/
+
+{
+  "customerId": "ALFKI",
+  "employeeId": 1,
+  "freight": 1,
+  "requiredDate": "01-01-2022",
+  "shipAddress": "string",
+  "shipCity": "string",
+  "shipCountry": "string",
+  "shipName": "string",
+  "shipPostalCode": "string",
+  "shipRegion": "string",
+  "shippedDate": "01-01-2022",
+  "shipperId": 1
+}
+```
+
+Kod z OrderRepository:
+
+```json
+        session.persist(order);
+```
+
+Generowany SQL:
+
+```sql
+Hibernate: 
+    select
+        shippers0_.shipper_id as shipper_1_18_,
+        shippers0_.company_name as company_2_18_,
+        shippers0_.phone as phone3_18_ 
+    from
+        shippers shippers0_ 
+    where
+        shippers0_.shipper_id=?
+Hibernate: 
+    select
+        employees0_.employee_id as employee1_9_,
+        employees0_.address as address2_9_,
+        employees0_.birth_date as birth_da3_9_,
+        employees0_.city as city4_9_,
+        employees0_.country as country5_9_,
+        employees0_.extension as extensio6_9_,
+        employees0_.first_name as first_na7_9_,
+        employees0_.hire_date as hire_dat8_9_,
+        employees0_.home_phone as home_pho9_9_,
+        employees0_.last_name as last_na10_9_,
+        employees0_.notes as notes11_9_,
+        employees0_.photo as photo12_9_,
+        employees0_.photo_path as photo_p13_9_,
+        employees0_.postal_code as postal_14_9_,
+        employees0_.region as region15_9_,
+        employees0_.title as title16_9_,
+        employees0_.title_of_courtesy as title_o17_9_ 
+    from
+        employees employees0_ 
+    where
+        employees0_.employee_id=?
+Hibernate: 
+    select
+        customers0_.customer_id as customer1_5_,
+        customers0_.address as address2_5_,
+        customers0_.city as city3_5_,
+        customers0_.company_name as company_4_5_,
+        customers0_.contact_name as contact_5_5_,
+        customers0_.contact_title as contact_6_5_,
+        customers0_.country as country7_5_,
+        customers0_.fax as fax8_5_,
+        customers0_.phone as phone9_5_,
+        customers0_.postal_code as postal_10_5_,
+        customers0_.region as region11_5_ 
+    from
+        customers customers0_ 
+    where
+        customers0_.customer_id=?
+Hibernate: 
+    select
+        nextval ('order_id_seq')
+Hibernate: 
+    select
+        customers_.customer_id,
+        customers_.address as address2_5_,
+        customers_.city as city3_5_,
+        customers_.company_name as company_4_5_,
+        customers_.contact_name as contact_5_5_,
+        customers_.contact_title as contact_6_5_,
+        customers_.country as country7_5_,
+        customers_.fax as fax8_5_,
+        customers_.phone as phone9_5_,
+        customers_.postal_code as postal_10_5_,
+        customers_.region as region11_5_ 
+    from
+        customers customers_ 
+    where
+        customers_.customer_id=?
+Hibernate: 
+    select
+        employees_.employee_id,
+        employees_.address as address2_9_,
+        employees_.birth_date as birth_da3_9_,
+        employees_.city as city4_9_,
+        employees_.country as country5_9_,
+        employees_.extension as extensio6_9_,
+        employees_.first_name as first_na7_9_,
+        employees_.hire_date as hire_dat8_9_,
+        employees_.home_phone as home_pho9_9_,
+        employees_.last_name as last_na10_9_,
+        employees_.notes as notes11_9_,
+        employees_.photo as photo12_9_,
+        employees_.photo_path as photo_p13_9_,
+        employees_.postal_code as postal_14_9_,
+        employees_.region as region15_9_,
+        employees_.title as title16_9_,
+        employees_.title_of_courtesy as title_o17_9_ 
+    from
+        employees employees_ 
+    where
+        employees_.employee_id=?
+Hibernate: 
+    select
+        shippers_.shipper_id,
+        shippers_.company_name as company_2_18_,
+        shippers_.phone as phone3_18_ 
+    from
+        shippers shippers_ 
+    where
+        shippers_.shipper_id=?
+Hibernate: 
+    insert 
+    into
+        Orders
+        (customer_id, employee_id, freight, order_date, required_date, ship_address, ship_city, ship_country, ship_name, ship_postal_code, ship_region, shipped_date, ship_via, order_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+```
+
+## 
 
 ## Encje z rozbudowanym CRUD-em
 
