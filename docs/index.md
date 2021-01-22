@@ -730,11 +730,11 @@ public class ProductsRepository extends AbstractRepository {
 
 Można zauważyć tu kilka rzeczy:
 
-- Metody `get...` korzystają z napisanych ręcznie kwerend, żeby uniknąć problemu n+1 zapytań
-- Zgodnie z sugestią prowadzącego, zamieniono `left joiny` na `inner join`-y, które są szybsze
+- Metody `GET...` korzystają z napisanych ręcznie kwerend. Encje, które zawierają obiekty powiązane w relacji pobieramy za pomoca komendy JOIN FETCH w jednym zapytaniu, dzięki temu  unikamy problemu n+1 zapytań
+- Zgodnie z sugestią prowadzącego, zamieniono `left joiny` na `inner join`-y, których działanie jest bardziej optymalne
 - Korzystamy z `join fetch` dla eager loading
 - Odczyt / zapis odbywa się w transakcjach
-- Zapisywanie pozostawiamy Hibernate'owemu `persist`.
+- Zapisywanie odbywa sie dzieki metodzie `persist` , po wczesniejszym przejsciu przez walidacje.
 
 
 
