@@ -733,7 +733,7 @@ Można zauważyć tu kilka rzeczy:
 - Metody `GET...` korzystają z napisanych ręcznie kwerend. Encje, które zawierają obiekty powiązane w relacji pobieramy za pomoca komendy JOIN FETCH w jednym zapytaniu, dzięki temu  unikamy problemu n+1 zapytań
 - Zgodnie z sugestią prowadzącego, zamieniono `left joiny` na `inner join`-y, których działanie jest bardziej optymalne
 - Korzystamy z `join fetch` dla eager loading
-- Odczyt / zapis odbywa się w transakcjach
+- Odczyt / zapis odbywa się w transakcjach, zgodnie z zasadmi ACID
 - Zapisywanie odbywa sie dzieki metodzie `persist` , po wczesniejszym przejsciu przez walidacje.
 
 
