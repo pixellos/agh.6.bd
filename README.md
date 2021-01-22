@@ -10,8 +10,8 @@
 
 ## Dokumentacja
 
-- [Strona główna](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/index.pdf)
-- [Docker / Docker-Compose / CI/CD](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/docker.pdf)
+- [Strona główna (PDF)](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/index.pdf)
+- [Docker / Docker-Compose / CI/CD (PDF)](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/docker.pdf)
 
 ## Uczestnicy
 

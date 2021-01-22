@@ -1,28 +1,28 @@
 
 - [Docker](#docker)
-- [Prerekwizyty](#prerekwizyty)
-  - [Java](#java)
-    - [Dockerfile](#dockerfile)
-    - [Budowanie](#budowanie)
-    - [Uruchamianie](#uruchamianie)
-  - [PostGres](#postgres)
-    - [Dockerfile](#dockerfile-1)
-    - [Budowanie](#budowanie-1)
-    - [Uruchamianie](#uruchamianie-1)
-  - [Komunikacja pomiędzy kontenerami `docker-compose`](#komunikacja-pomiędzy-kontenerami-docker-compose)
-  - [Deploy używając Okteto-stacks](#deploy-używając-okteto-stacks)
+  - [Prerekwizyty](#prerekwizyty)
+    - [Java](#java)
+      - [Dockerfile](#dockerfile)
+      - [Budowanie](#budowanie)
+      - [Uruchamianie](#uruchamianie)
+    - [PostGres](#postgres)
+      - [Dockerfile](#dockerfile-1)
+      - [Budowanie](#budowanie-1)
+      - [Uruchamianie](#uruchamianie-1)
+    - [Komunikacja pomiędzy kontenerami `docker-compose`](#komunikacja-pomiędzy-kontenerami-docker-compose)
+    - [Deploy używając Okteto-stacks](#deploy-używając-okteto-stacks)
 
-# Docker
+## Docker
 *Co chcemy osiągnąć w tej sekcji?*
  
 Zbudować aplikację Java korzystającą z bazy danych
 
-# Prerekwizyty
+### Prerekwizyty
 [https://docs.microsoft.com/en-us/windows/wsl/install-win10]()
 
 [https://docs.docker.com/docker-for-windows/install/]()
 
-## Java
+#### Java
 
 Będziemy korzystać z `Maven` 
 
@@ -30,7 +30,7 @@ W katalogu `src\` znajdują się pliki projektu Java
 
 Mając plik `pom.xml` w root solucji i korzystając z odpowiedzi `https://stackoverflow.com/a/27768965/5381370` możemy w root solucji stworzyć `Dockerfile`, który będzie służył za postawę do postawienia naszej aplikacji
 
-### Dockerfile
+##### Dockerfile
 
 *./Dockerfile*
 ```dockerfile
@@ -45,7 +45,7 @@ EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
 ```
 
-### Budowanie
+##### Budowanie
 
 
 Możemy sprawdzić, czy obraz się poprawnie buduje
@@ -56,9 +56,9 @@ Switch `t` służy do nazwania obrazu
 
 Po kilku minutach budowanie powinno zakończyć się bez błędu 
 
-![](./images/2020-12-05-13-50-26.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-13-50-26.png)
 
-### Uruchamianie 
+##### Uruchamianie 
 
 Wtedy możemy uruchomić nasz obraz
 
@@ -66,25 +66,25 @@ Wtedy możemy uruchomić nasz obraz
 
 i w przeglądarce powinniśmy dać rady  połączyć się z aplikacją
 
-![](./images/2020-12-05-14-00-42.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-14-00-42.png)
 
 możemy go zatrzymać wywołując `docker stop java`
 
-![](./images/2020-12-05-14-04-17.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-14-04-17.png)
 
 Ale w dalszym ciągu nie mamy bazy
 
-## PostGres
+#### PostGres
 Do PostGres istnieje gotowy obraz, rozszerzmy go
 
-### Dockerfile
+##### Dockerfile
 
 *./Dockerfile*
 ```dockerfile
-# Jako base używamy oficjalnego obrazu postgres
+### Jako base używamy oficjalnego obrazu postgres
 FROM postgres:latest
 
-# Wszystkie pliki skopiowane do `/docker-entrypoint-initdb.d/` są wywoływane gdy nie ma bazy
+### Wszystkie pliki skopiowane do `/docker-entrypoint-initdb.d/` są wywoływane gdy nie ma bazy
 COPY src/main/resources/db-schema/db-schema.sql /docker-entrypoint-initdb.d/2_db-schema.sql
 COPY src/main/resources/db-schema/data.sql /docker-entrypoint-initdb.d/3_data.sql
 
@@ -93,28 +93,28 @@ ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=northwind
 ENV POSTGRES_USER=postgres
 
-# Komendy, które udają orginalny obraz
+### Komendy, które udają orginalny obraz
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 5432
 CMD ["postgres"]
 ```
 
-### Budowanie
+##### Budowanie
 
 `docker build . -f Dockerfile-northwind -t pg-service:latest`
 
 
-![](./images/2020-12-05-14-25-32.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-14-25-32.png)
 
-### Uruchamianie
+##### Uruchamianie
 
 `docker run --publish 5432:5432 --detach --name pg pg-service:latest`
 
-![](./images/2020-12-05-14-35-23.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-14-35-23.png)
 
 
-## Komunikacja pomiędzy kontenerami `docker-compose`
+#### Komunikacja pomiędzy kontenerami `docker-compose`
 
 Jako, że Docker nie ma domyślnie żadnego wbudowanego sposobu na łączność pomiędzy kontenerami użyjemy `docker-compose`
 
@@ -131,7 +131,7 @@ services:
     networks:
       - postgres
     volumes:
-      - database-data2:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - database-data2:/var/lib/postgresql/data/ ### persist data even if container shuts down
 
   northwind-java:
     depends_on:
@@ -184,21 +184,21 @@ po wywołaniu
 Nasza baza i aplikacja powinny się uruchomić, i powinniśmy być w stanie otworzyć 
 [http://localhost:8080]()
 
-![](./images/2020-12-05-15-03-05.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-15-03-05.png)
 *swagger ui z danymi*
 
-## Deploy używając Okteto-stacks
+#### Deploy używając Okteto-stacks
 
 Naszą konstelacje aplikacji możemy zdeployować za darmo używając Okteto
 
-![](./images/2020-12-05-15-07-00.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-15-07-00.png)
 [https://okteto.com/]()
 
 Robimy konto, polecam przez githuba
 
 Gdy potwierdzimy mail dodajemy nasze repo
 
-![](./images/2020-12-05-15-11-31.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-15-11-31.png)
 
 I teraz możemy przejść do konfiguracji
 
@@ -228,7 +228,7 @@ services:
 
 Klikamy `redeploy`
 
-![](./images/2020-12-05-15-16-42.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-15-16-42.png)
 
 I możemy używać naszej aplikacji 
 
