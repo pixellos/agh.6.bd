@@ -6,19 +6,16 @@ on:
       - master
 
 jobs:
-  converttopdf:
-    name: Build PDF
+  makepdfs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: baileyjm02/markdown-to-pdf@v1.0.1
-        with:
-          output_dir: pdfs
-          input_dir: docs
-          images_dir: docs/images
-          build_html: true
-      
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-           commit_message: Auto pdf changes
-     
+    - uses: actions/checkout@v1
+    - uses: mkrakowitzer/actions-makepdfs@master
+      if: github.ref == 'refs/heads/master'
+      with:
+        markdown_dir: docs
+        output_dir: pdfs
+    - uses: actions/upload-artifact@v1
+      with:
+        name: platform-architecture-docs
+        path: pdfs
