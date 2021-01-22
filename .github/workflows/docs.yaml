@@ -15,7 +15,6 @@ jobs:
       with:
         markdown_dir: docs
         output_dir: pdfs
-    - uses: actions/upload-artifact@v1
+    - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        name: platform-architecture-docs
-        path: pdfs
+        commit_message: Auto pdf changes
