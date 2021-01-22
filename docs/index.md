@@ -12,7 +12,7 @@ Wydział Informatyki, Elektroniki i Telekomunikacji
 
 # Bazy danych – Northwind
 
-![](./northwind.PNG)
+![](./images/northwind.PNG)
 
 # System do składania zamówień
 
