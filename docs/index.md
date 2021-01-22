@@ -2,7 +2,7 @@
 
 
 
-
+ 
 
 ## Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie
 
