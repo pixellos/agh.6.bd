@@ -1104,37 +1104,40 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 <body>
 <ul>
 <li><a href="#docker">Docker</a></li>
-<li><a href="#prerekwizyty">Prerekwizyty</a>
+<li><a href="#install-it-first">Install it first</a>
 <ul>
-<li><a href="#java">Java</a>
+<li><a href="#java-configuration">Java Configuration</a>
 <ul>
 <li><a href="#dockerfile">Dockerfile</a></li>
-<li><a href="#budowanie">Budowanie</a></li>
-<li><a href="#uruchamianie">Uruchamianie</a></li>
+<li><a href="#building">Building</a></li>
+<li><a href="#running">Running</a></li>
 </ul>
 </li>
 <li><a href="#postgres">PostGres</a>
 <ul>
 <li><a href="#dockerfile-1">Dockerfile</a></li>
-<li><a href="#budowanie-1">Budowanie</a></li>
-<li><a href="#uruchamianie-1">Uruchamianie</a></li>
+<li><a href="#building-1">Building</a></li>
+<li><a href="#running-1">Running</a></li>
 </ul>
 </li>
-<li><a href="#komunikacja-pomi%C4%99dzy-kontenerami-docker-compose">Komunikacja pomiędzy kontenerami <code>docker-compose</code></a></li>
-<li><a href="#deploy-u%C5%BCywaj%C4%85c-okteto-stacks">Deploy używając Okteto-stacks</a></li>
+<li><a href="#communication-between-containers---introducing-docker-compose">Communication between containers - introducing <code>docker-compose</code></a>
+<ul>
+<li><a href="#running-2">Running</a></li>
+</ul>
+</li>
+<li><a href="#deploy-by-okteto-stacks">Deploy by Okteto-stacks</a></li>
 </ul>
 </li>
 </ul>
 <h1 id="docker">Docker</h1>
-<p><em>Co chcemy osiągnąć w tej sekcji?</em></p>
-<p>Zbudować aplikację Java korzystającą z bazy danych</p>
-<h1 id="prerekwizyty">Prerekwizyty</h1>
+<p><em>Pss, buddy, want a candy?</em></p>
+<h1 id="install-it-first">Install it first</h1>
 <p><a href="">https://docs.microsoft.com/en-us/windows/wsl/install-win10</a></p>
 <p><a href="">https://docs.docker.com/docker-for-windows/install/</a></p>
-<h2 id="java">Java</h2>
-<p>Będziemy korzystać z <code>Maven</code></p>
-<p>W katalogu <code>src\</code> znajdują się pliki projektu Java</p>
-<p>Mając plik <code>pom.xml</code> w root solucji i korzystając z odpowiedzi <code>https://stackoverflow.com/a/27768965/5381370</code> możemy w root solucji stworzyć <code>Dockerfile</code>, który będzie służył za postawę do postawienia naszej aplikacji</p>
+<h2 id="java-configuration">Java Configuration</h2>
+<p>We gonna use <code>Maven</code></p>
+<p>Under <code>src\</code> we can place java files</p>
+<p>Given <code>pom.xml</code> in solution root basing on <code>https://stackoverflow.com/a/27768965/5381370</code> we can create <code>Dockerfile</code>, which we will be using as a recipe how to set up application</p>
 <h3 id="dockerfile">Dockerfile</h3>
 <p><em>./Dockerfile</em></p>
 <pre><code class="language-dockerfile"><span class="hljs-keyword">FROM</span> maven:<span class="hljs-number">3.6</span>.<span class="hljs-number">0</span>-jdk-<span class="hljs-number">11</span>-slim AS build
@@ -1147,28 +1150,31 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 <span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8080</span>
 <span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;java&quot;</span>,<span class="hljs-string">&quot;-jar&quot;</span>,<span class="hljs-string">&quot;/usr/local/lib/app.jar&quot;</span>]</span>
 </code></pre>
-<h3 id="budowanie">Budowanie</h3>
-<p>Możemy sprawdzić, czy obraz się poprawnie buduje</p>
-<p>Switch <code>t</code> służy do nazwania obrazu</p>
+<h3 id="building">Building</h3>
+<p>Now we can check if project is building correctly</p>
 <p><code>docker build . -t java-service:latest</code></p>
-<p>Po kilku minutach budowanie powinno zakończyć się bez błędu</p>
-<p><img src="./images/2020-12-05-13-50-26.png" alt="" /></p>
-<h3 id="uruchamianie">Uruchamianie</h3>
-<p>Wtedy możemy uruchomić nasz obraz</p>
+<p><code>.</code> - we gonna use current working directory as a context, so make sure its same that one which contains dockerfile</p>
+<p>After few mins we should have build docker image</p>
+<p><img src="./2020-12-05-13-50-26.png" alt="" /></p>
+<h3 id="running">Running</h3>
+<p>Finally! We can run our image now.</p>
 <p><code>docker run --publish 8080:8080 --detach --name java java-service:latest</code></p>
-<p>i w przeglądarce powinniśmy dać rady  połączyć się z aplikacją</p>
-<p><img src="./images/2020-12-05-14-00-42.png" alt="" /></p>
-<p>możemy go zatrzymać wywołując <code>docker stop java</code></p>
-<p><img src="./images/2020-12-05-14-04-17.png" alt="" /></p>
-<p>Ale w dalszym ciągu nie mamy bazy</p>
+<p><code>--publish 8080:8080</code> - we're redirecting container port 8080 to host 8080<br />
+<code>--detach</code> - do not use current console</p>
+<p>When that one runs successfully we should be able to connect to app</p>
+<p><img src="./2020-12-05-14-00-42.png" alt="" /></p>
+<p>Okay, all right, now we can stop that using <code>docker stop java</code></p>
+<p><img src="./2020-12-05-14-04-17.png" alt="" /></p>
+<p>But we don't have any DB yet :O</p>
 <h2 id="postgres">PostGres</h2>
-<p>Do PostGres istnieje gotowy obraz, rozszerzmy go</p>
+<p>Postgres does have existing image, so we can just use it</p>
+<p>But to make things a little more complicated, and to use custom init script which would set up db we do a little magic ;)</p>
 <h3 id="dockerfile">Dockerfile</h3>
 <p><em>./Dockerfile</em></p>
-<pre><code class="language-dockerfile"><span class="hljs-comment"># Jako base używamy oficjalnego obrazu postgres</span>
+<pre><code class="language-dockerfile"><span class="hljs-comment"># Use official postgress image</span>
 <span class="hljs-keyword">FROM</span> postgres:latest
 
-<span class="hljs-comment"># Wszystkie pliki skopiowane do `/docker-entrypoint-initdb.d/` są wywoływane gdy nie ma bazy</span>
+<span class="hljs-comment"># All files from `/docker-entrypoint-initdb.d/` are executed if DB is not initialized</span>
 <span class="hljs-keyword">COPY</span><span class="bash"> src/main/resources/db-schema/db-schema.sql /docker-entrypoint-initdb.d/2_db-schema.sql</span>
 <span class="hljs-keyword">COPY</span><span class="bash"> src/main/resources/db-schema/data.sql /docker-entrypoint-initdb.d/3_data.sql</span>
 
@@ -1177,20 +1183,21 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 <span class="hljs-keyword">ENV</span> POSTGRES_DB=northwind
 <span class="hljs-keyword">ENV</span> POSTGRES_USER=postgres
 
-<span class="hljs-comment"># Komendy, które udają orginalny obraz</span>
+<span class="hljs-comment"># Reusing entrypoint, expose, cmd from original image</span>
 
 <span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;docker-entrypoint.sh&quot;</span>]</span>
 <span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">5432</span>
 <span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;postgres&quot;</span>]</span>
 </code></pre>
-<h3 id="budowanie">Budowanie</h3>
+<h3 id="building">Building</h3>
 <p><code>docker build . -f Dockerfile-northwind -t pg-service:latest</code></p>
-<p><img src="./images/2020-12-05-14-25-32.png" alt="" /></p>
-<h3 id="uruchamianie">Uruchamianie</h3>
+<p><code>-f</code> switch is used when we have multiple <code>Dockerfiles</code> in dir and we want to use one</p>
+<p><img src="./2020-12-05-14-25-32.png" alt="" /></p>
+<h3 id="running">Running</h3>
 <p><code>docker run --publish 5432:5432 --detach --name pg pg-service:latest</code></p>
-<p><img src="./images/2020-12-05-14-35-23.png" alt="" /></p>
-<h2 id="komunikacja-pomi%C4%99dzy-kontenerami-docker-compose">Komunikacja pomiędzy kontenerami <code>docker-compose</code></h2>
-<p>Jako, że Docker nie ma domyślnie żadnego wbudowanego sposobu na łączność pomiędzy kontenerami użyjemy <code>docker-compose</code></p>
+<p><img src="./2020-12-05-14-35-23.png" alt="" /></p>
+<h2 id="communication-between-containers---introducing-docker-compose">Communication between containers - introducing <code>docker-compose</code></h2>
+<p>Docker by its own does not have any build-in way to setup constelation of containers - we gonna use  <code>docker-compose</code> to deal with that</p>
 <p><em>docker-compose.yaml</em></p>
 <pre><code class="language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.1&#x27;</span>
 <span class="hljs-attr">services:</span>
@@ -1223,37 +1230,38 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   <span class="hljs-attr">postgres:</span>
     <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span>
 </code></pre>
-<p>Ustawiliśmy sobie most sieciowy przez który połączymy sobie aplikacje</p>
+<p>We need to setup networks to enable communication between containers</p>
 <pre><code class="language-yaml"><span class="hljs-attr">networks:</span>
   <span class="hljs-attr">postgres:</span>
     <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span>
 </code></pre>
-<p>w każdym Dockerfile</p>
+<p>In each service we need to add</p>
 <pre><code class="language-yaml"> <span class="hljs-attr">networks:</span>
       <span class="hljs-bullet">-</span> <span class="hljs-string">postgres</span>
 </code></pre>
-<p>oraz wykorzystujemy poprzednio stworzone <code>dockerfile</code></p>
+<p>Also, we're using <code>dockerfile</code> that was created before</p>
 <pre><code class="language-yaml"><span class="hljs-attr">build:</span> 
   <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
   <span class="hljs-attr">dockerfile:</span> <span class="hljs-string">Dockerfile</span>
 </code></pre>
-<p>po wywołaniu</p>
+<h3 id="running">Running</h3>
+<p>We can execute</p>
 <pre><code class="language-powershell">&amp; docker<span class="hljs-literal">-compose</span> build
 &amp; docker<span class="hljs-literal">-compose</span> up
 </code></pre>
-<p>Nasza baza i aplikacja powinny się uruchomić, i powinniśmy być w stanie otworzyć<br />
-<a href="">http://localhost:8080</a></p>
-<p><img src="./images/2020-12-05-15-03-05.png" alt="" /><br />
-<em>swagger ui z danymi</em></p>
-<h2 id="deploy-u%C5%BCywaj%C4%85c-okteto-stacks">Deploy używając Okteto-stacks</h2>
-<p>Naszą konstelacje aplikacji możemy zdeployować za darmo używając Okteto</p>
-<p><img src="./images/2020-12-05-15-07-00.png" alt="" /><br />
+<p>After that DB and app should be up and running</p>
+<p><a href="">http://localhost:8080</a></p>
+<p><img src="./2020-12-05-15-03-05.png" alt="" /><br />
+<em>Swagger ui with data</em></p>
+<h2 id="deploy-by-okteto-stacks">Deploy by Okteto-stacks</h2>
+<p>To get everything in cloud we can use free Okteto-stacks service</p>
+<p><img src="./2020-12-05-15-07-00.png" alt="" /><br />
 <a href="">https://okteto.com/</a></p>
-<p>Robimy konto, polecam przez githuba</p>
-<p>Gdy potwierdzimy mail dodajemy nasze repo</p>
-<p><img src="./images/2020-12-05-15-11-31.png" alt="" /></p>
-<p>I teraz możemy przejść do konfiguracji</p>
-<p>W repo  solucji tworzymy plik <code>okteto-stack.yml</code> i odwzorowujemy naszego <code>docker-compse</code></p>
+<p>First, we need an account - i tried github login, went smooth</p>
+<p>After mail confirmation we need to add permissions to repo</p>
+<p><img src="./2020-12-05-15-11-31.png" alt="" /></p>
+<p>And we can continue</p>
+<p>In git root we need to add file <code>okteto-stack.yml</code> and we need to replicated <code>docker-compse</code> with new syntax</p>
 <pre><code>name: myapp
 services:
   northwind:
@@ -1274,9 +1282,9 @@ services:
       - 8080
 
 </code></pre>
-<p>Klikamy <code>redeploy</code></p>
-<p><img src="./images/2020-12-05-15-16-42.png" alt="" /></p>
-<p>I możemy używać naszej aplikacji</p>
+<p>Last thing is clicking <code>redeploy</code></p>
+<p><img src="./2020-12-05-15-16-42.png" alt="" /></p>
+<p>And we can use our app</p>
 <p>https://northwind-java-pixellos.cloud.okteto.net/swagger-ui/</p>
 
 </body>
