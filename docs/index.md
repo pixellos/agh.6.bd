@@ -8,11 +8,11 @@
 
 Wydział Informatyki, Elektroniki i Telekomunikacji
 
-![](./images/2020-12-05-11-18-47.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-11-18-47.png)
 
 # Bazy danych – Northwind
 
-![](./images/northwind.PNG)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/northwind.PNG)
 
 # System do składania zamówień
  
@@ -152,7 +152,7 @@ jest też hostowana
 
 Podstawowym interfejsem użytkownika jest Swagger UI, który pozwala na łatwy dostęp do endpointów aplikacji z poziomu przeglądarki
 
-![](./images/2020-12-05-15-21-46.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-15-21-46.png)
 
 Rysunek X. Swagger UI W aplikacji
 
@@ -164,7 +164,7 @@ Aby go skonfigurować trzeba:
 
 ### Dodać paczki
 
-![](./images/2020-12-05-15-21-55.png)
+![](https://raw.githubusercontent.com/pixellos/agh.6.bd/master/images/2020-12-05-15-21-55.png)
 
 Rysunek X. Zrzut ekranu z paczkami
 
