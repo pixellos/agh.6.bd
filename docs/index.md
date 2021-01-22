@@ -12,7 +12,7 @@ Wydział Informatyki, Elektroniki i Telekomunikacji
 
 # Bazy danych – Northwind
 
-![](C:\AGH\agh.6.bd\docs\northwind.PNG)
+![](./northwind.PNG)
 
 # System do składania zamówień
 
@@ -29,6 +29,7 @@ Autorzy
   - [Przebieg prac:](#przebieg-prac)
   - [Adres do repozytorium:](#adres-do-repozytorium)
     - [Użyte technologie:](#użyte-technologie)
+    - [Uzasadnienie:](#uzasadnienie)
   - [Uruchomienie dla developera:](#uruchomienie-dla-developera)
   - [Uruchomienie:](#uruchomienie)
   - [Odnośniki w aplikacji](#odnośniki-w-aplikacji)
@@ -37,7 +38,15 @@ Autorzy
     - [Konfiguracja](#konfiguracja)
     - [Dodać paczki](#dodać-paczki)
       - [Skonfigurować middleware](#skonfigurować-middleware)
-  - [Przykładowe wywołania:](#przykładowe-wywołania)
+  - [Część backendowa - bottom up](#część-backendowa---bottom-up)
+  - [Mapowanie obiektowo - relacyjne](#mapowanie-obiektowo---relacyjne)
+  - [Część biznesowo - aplikacyjna](#część-biznesowo---aplikacyjna)
+  - [Przykładowe wywołania na produkcie:](#przykładowe-wywołania-na-produkcie)
+    - [1. GetAll](#1-getall)
+    - [2. GetAllByCategory](#2-getallbycategory)
+    - [3. Create](#3-create)
+    - [](#)
+  - [Encje z rozbudowanym CRUD-em](#encje-z-rozbudowanym-crud-em)
 # Wstęp
 
 ## Przebieg prac:
