@@ -51,4 +51,10 @@ public class OrderDetailsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("orderDetails/delete/productId/{productId}/orderId/{orderId}")
+    public ResponseEntity<Void> deleteByProductIdAndOrderId(@PathVariable Short productId, @PathVariable Short orderId) {
+        orderDetailsService.deleteByProductIdAndOrderId(productId, orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

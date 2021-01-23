@@ -40,6 +40,10 @@ public class OrderDetailsService {
         return orderDetailsRepository.getByProductId(productId);
     }
 
+    public OrderDetails getByProductIdAndOrderId(Short orderId, Short productId) {
+        return  orderDetailsRepository.getByOrderIdAndProductId(orderId, productId).orElseThrow(IllegalArgumentException::new);
+    }
+
     public List<OrderDetails> getByProductCategory(String categoryName) {
         return orderDetailsRepository.getByProductCategory(categoryName);
     }
@@ -64,5 +68,10 @@ public class OrderDetailsService {
 
         validationService.validate(orderDetails);
         orderDetailsRepository.persist(orderDetails);
+    }
+
+    public void deleteByProductIdAndOrderId(Short productId, Short orderId) {
+        OrderDetails orderDetails = getByProductIdAndOrderId(productId, orderId);
+        orderDetailsRepository.delete(orderDetails);
     }
 }

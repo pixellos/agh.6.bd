@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderDetailsRepository extends AbstractRepository {
@@ -68,6 +69,27 @@ public class OrderDetailsRepository extends AbstractRepository {
         return orderDetails;
     }
 
+    public Optional<OrderDetails> getByOrderIdAndProductId(Short productId, Short orderId) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        Optional<OrderDetails> orderDetails = session
+                .createQuery("SELECT o FROM OrderDetails o" +
+                        " INNER JOIN FETCH o.orderDetailsId.orders ord" +
+                        " INNER JOIN FETCH ord.customers c" +
+                        " INNER JOIN FETCH ord.employees e" +
+                        " INNER JOIN FETCH ord.shippers sh " +
+                        " INNER JOIN FETCH o.orderDetailsId.products p" +
+                        " INNER JOIN FETCH p.categories cat" +
+                        " INNER JOIN FETCH p.suppliers s" +
+                        " WHERE p.productId=:productId AND ord.orderId=:orderId", OrderDetails.class)
+                .setParameter("productId", productId)
+                .setParameter("orderId", orderId)
+                .uniqueResultOptional();
+        transaction.commit();
+        session.close();
+        return orderDetails;
+    }
+
     public List<OrderDetails> getByProductCategory(String categoryName) {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
@@ -112,6 +134,14 @@ public class OrderDetailsRepository extends AbstractRepository {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         session.persist(orderDetails);
+        transaction.commit();
+        session.close();
+    }
+
+    public void delete(OrderDetails orderDetails) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(orderDetails);
         transaction.commit();
         session.close();
     }

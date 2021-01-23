@@ -38,3 +38,5 @@ POST: http://localhost:8080/orderDetails
     "quantity": 10,
     "discount": 0
 }
+
+DELETE: http://localhost:8080/orderDetails/delete/productId/75/orderId/11077
