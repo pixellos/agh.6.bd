@@ -10,6 +10,7 @@
 
 ## Dokumentacja
 
+- [Dokumentacja (Kompletna)](https://github.com/pixellos/agh.6.bd/blob/master/docs/Flak%2C%20Gliński%2C%20Popielarz%20-%20Northwind.pdf)
 - [Strona główna (PDF)](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/index.pdf)
 - [Docker / Docker-Compose / CI/CD (PDF)](https://github.com/pixellos/agh.6.bd/blob/master/pdfs/docker.pdf)
 
