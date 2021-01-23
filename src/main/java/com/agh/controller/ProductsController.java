@@ -2,6 +2,7 @@ package com.agh.controller;
 
 import com.agh.model.Products;
 import com.agh.request.CreateProductRequest;
+import com.agh.request.UpdateProductRequest;
 import com.agh.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,12 @@ public class ProductsController {
     @PostMapping("products")
     public ResponseEntity<Void> create(@RequestBody CreateProductRequest request) {
         productsService.create(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("products/update")
+    public ResponseEntity<Void> update(@RequestBody UpdateProductRequest request) {
+        productsService.update(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -6,6 +6,7 @@ import com.agh.model.Orders;
 import com.agh.model.Products;
 import com.agh.repository.OrderDetailsRepository;
 import com.agh.request.CreateOrderDetailsRequest;
+import com.agh.request.UpdateOrderDetailsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class OrderDetailsService {
         return orderDetailsRepository.getByProductId(productId);
     }
 
-    public OrderDetails getByProductIdAndOrderId(Short orderId, Short productId) {
-        return  orderDetailsRepository.getByOrderIdAndProductId(orderId, productId).orElseThrow(IllegalArgumentException::new);
+    public OrderDetails getByProductIdAndOrderId(Short productId, Short orderId) {
+        return  orderDetailsRepository.getByProductIdAndOrderId(productId, orderId).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<OrderDetails> getByProductCategory(String categoryName) {
@@ -68,6 +69,17 @@ public class OrderDetailsService {
 
         validationService.validate(orderDetails);
         orderDetailsRepository.persist(orderDetails);
+    }
+
+    public void update(UpdateOrderDetailsRequest request) {
+        OrderDetails orderDetails = getByProductIdAndOrderId(request.getProductId(), request.getOrderId());
+
+        orderDetails.setUnitPrice(request.getUnitPrice());
+        orderDetails.setQuantity(request.getQuantity());
+        orderDetails.setDiscount(request.getDiscount());
+
+        validationService.validate(orderDetails);
+        orderDetailsRepository.update(orderDetails);
     }
 
     public void deleteByProductIdAndOrderId(Short productId, Short orderId) {

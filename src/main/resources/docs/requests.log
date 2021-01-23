@@ -40,3 +40,25 @@ POST: http://localhost:8080/orderDetails
 }
 
 DELETE: http://localhost:8080/orderDetails/delete/productId/75/orderId/11077
+
+PUT: http://localhost:8080/products/update
+{
+    "productId": 77,
+
+    "quantityPerUnit": "12 boxes",
+    "unitPrice": 95,
+    "unitsInStock": 100,
+    "unitsOnOrder": 30,
+    "reorderLevel": 1,
+    "discontinued": 2
+}
+
+PUT: http://localhost:8080/orderDetails/update
+{
+    "productId": 75,
+    "orderId": 11077,
+
+    "unitPrice": 10.05,
+    "quantity": 10,
+    "discount": 10
+}

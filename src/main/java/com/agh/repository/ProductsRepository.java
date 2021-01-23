@@ -94,4 +94,12 @@ public class ProductsRepository extends AbstractRepository {
         transaction.commit();
         session.close();
     }
+
+    public void update(Products product) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(product);
+        transaction.commit();
+        session.close();
+    }
 }

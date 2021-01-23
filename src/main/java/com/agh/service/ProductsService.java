@@ -5,6 +5,7 @@ import com.agh.model.Products;
 import com.agh.model.Suppliers;
 import com.agh.repository.ProductsRepository;
 import com.agh.request.CreateProductRequest;
+import com.agh.request.UpdateProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,19 @@ public class ProductsService {
 
         validationService.validate(product);
         productsRepository.persist(product);
+    }
+
+    public void update(UpdateProductRequest request) {
+        Products product = getById(request.getProductId());
+
+        product.setQuantityPerUnit(request.getQuantityPerUnit());
+        product.setUnitPrice(request.getUnitPrice());
+        product.setUnitsInStock(request.getUnitsInStock());
+        product.setUnitsOnOrder(request.getUnitsOnOrder());
+        product.setReorderLevel(request.getReorderLevel());
+        product.setDiscontinued(request.getDiscontinued());
+
+        validationService.validate(product);
+        productsRepository.update(product);
     }
 }

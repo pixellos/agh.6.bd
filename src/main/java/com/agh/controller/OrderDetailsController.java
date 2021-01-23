@@ -2,6 +2,7 @@ package com.agh.controller;
 
 import com.agh.model.OrderDetails;
 import com.agh.request.CreateOrderDetailsRequest;
+import com.agh.request.UpdateOrderDetailsRequest;
 import com.agh.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,12 @@ public class OrderDetailsController {
     @PostMapping("orderDetails")
     public ResponseEntity<Void> create(@RequestBody CreateOrderDetailsRequest request) {
         orderDetailsService.create(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("orderDetails/update")
+    public ResponseEntity<Void> update(@RequestBody UpdateOrderDetailsRequest request) {
+        orderDetailsService.update(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

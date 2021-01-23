@@ -69,7 +69,7 @@ public class OrderDetailsRepository extends AbstractRepository {
         return orderDetails;
     }
 
-    public Optional<OrderDetails> getByOrderIdAndProductId(Short productId, Short orderId) {
+    public Optional<OrderDetails> getByProductIdAndOrderId(Short productId, Short orderId) {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         Optional<OrderDetails> orderDetails = session
@@ -134,6 +134,14 @@ public class OrderDetailsRepository extends AbstractRepository {
         Session session = getOpenSession();
         Transaction transaction = session.beginTransaction();
         session.persist(orderDetails);
+        transaction.commit();
+        session.close();
+    }
+
+    public void update(OrderDetails orderDetails) {
+        Session session = getOpenSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(orderDetails);
         transaction.commit();
         session.close();
     }
